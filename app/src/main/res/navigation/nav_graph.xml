@@ -3,16 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/landingFragment">
+
+    <fragment
+        android:id="@+id/landingFragment"
+        android:name="com.cookshare.ui.auth.LandingFragment"
+        android:label="Landing"
+        tools:layout="@layout/fragment_landing">
+        <action android:id="@+id/action_landingFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action android:id="@+id/action_landingFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action android:id="@+id/action_landingFragment_to_feedFragment"
+            app:destination="@id/feedFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/landingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.cookshare.ui.auth.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
-        <action android:id="@+id/action_loginFragment_to_registerFragment" app:destination="@id/registerFragment" />
-        <action android:id="@+id/action_loginFragment_to_feedFragment" app:destination="@id/feedFragment"
-            app:popUpTo="@id/loginFragment" app:popUpToInclusive="true" />
+        <action android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action android:id="@+id/action_loginFragment_to_feedFragment"
+            app:destination="@id/feedFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/landingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -20,8 +54,12 @@
         android:name="com.cookshare.ui.auth.RegisterFragment"
         android:label="Register"
         tools:layout="@layout/fragment_register">
-        <action android:id="@+id/action_registerFragment_to_feedFragment" app:destination="@id/feedFragment"
-            app:popUpTo="@id/loginFragment" app:popUpToInclusive="true" />
+        <action android:id="@+id/action_registerFragment_to_feedFragment"
+            app:destination="@id/feedFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/landingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -29,8 +67,18 @@
         android:name="com.cookshare.ui.feed.FeedFragment"
         android:label="Feed"
         tools:layout="@layout/fragment_feed">
-        <action android:id="@+id/action_feedFragment_to_recipeDetailFragment" app:destination="@id/recipeDetailFragment" />
-        <action android:id="@+id/action_feedFragment_to_editRecipeFragment" app:destination="@id/editRecipeFragment" />
+        <action android:id="@+id/action_feedFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action android:id="@+id/action_feedFragment_to_editRecipeFragment"
+            app:destination="@id/editRecipeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -39,7 +87,12 @@
         android:label="Recipe Detail"
         tools:layout="@layout/fragment_recipe_detail">
         <argument android:name="recipeId" app:argType="string" />
-        <action android:id="@+id/action_recipeDetailFragment_to_editRecipeFragment" app:destination="@id/editRecipeFragment" />
+        <action android:id="@+id/action_recipeDetailFragment_to_editRecipeFragment"
+            app:destination="@id/editRecipeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -47,7 +100,8 @@
         android:name="com.cookshare.ui.recipe.edit.EditRecipeFragment"
         android:label="Edit Recipe"
         tools:layout="@layout/fragment_edit_recipe">
-        <argument android:name="recipeId" app:argType="string" app:nullable="true" android:defaultValue="@null" />
+        <argument android:name="recipeId" app:argType="string" app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
@@ -55,7 +109,12 @@
         android:name="com.cookshare.ui.recipe.myrecipes.MyRecipesFragment"
         android:label="My Recipes"
         tools:layout="@layout/fragment_my_recipes">
-        <action android:id="@+id/action_myRecipesFragment_to_recipeDetailFragment" app:destination="@id/recipeDetailFragment" />
+        <action android:id="@+id/action_myRecipesFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -63,8 +122,18 @@
         android:name="com.cookshare.ui.search.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search">
-        <action android:id="@+id/action_searchFragment_to_recipeDetailFragment" app:destination="@id/recipeDetailFragment" />
-        <action android:id="@+id/action_searchFragment_to_externalRecipeDetailFragment" app:destination="@id/externalRecipeDetailFragment" />
+        <action android:id="@+id/action_searchFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action android:id="@+id/action_searchFragment_to_externalRecipeDetailFragment"
+            app:destination="@id/externalRecipeDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -80,8 +149,12 @@
         android:name="com.cookshare.ui.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
-        <action android:id="@+id/action_profileFragment_to_loginFragment" app:destination="@id/loginFragment"
-            app:popUpTo="@id/nav_graph" app:popUpToInclusive="true" />
+        <action android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/landingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>
