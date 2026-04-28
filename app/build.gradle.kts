@@ -83,6 +83,12 @@ dependencies {
     // SwipeRefresh
     implementation(libs.swiperefreshlayout)
 
+    // Lottie animations
+    implementation(libs.lottie)
+
+    // Shimmer loading effect
+    implementation(libs.shimmer)
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
