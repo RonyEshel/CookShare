@@ -5,19 +5,22 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.cookshare.data.local.dao.RecipeDao
+import com.cookshare.data.local.dao.SavedRecipeDao
 import com.cookshare.data.local.dao.UserDao
 import com.cookshare.data.model.Recipe
+import com.cookshare.data.model.SavedRecipe
 import com.cookshare.data.model.User
 
 @Database(
-    entities = [Recipe::class, User::class],
-    version = 1,
+    entities = [Recipe::class, User::class, SavedRecipe::class],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao
     abstract fun userDao(): UserDao
+    abstract fun savedRecipeDao(): SavedRecipeDao
 
     companion object {
         @Volatile

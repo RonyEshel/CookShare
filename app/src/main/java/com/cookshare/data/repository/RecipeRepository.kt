@@ -20,6 +20,8 @@ class RecipeRepository {
 
     fun searchLocalRecipes(query: String): LiveData<List<Recipe>> = recipeDao.searchRecipes(query)
 
+    fun getRecipesByCategory(category: String): LiveData<List<Recipe>> = recipeDao.getRecipesByCategory(category)
+
     suspend fun refreshRecipes(): Result<List<Recipe>> = withContext(Dispatchers.IO) {
         val result = firebaseManager.getAllRecipes()
         result.onSuccess { recipes ->
@@ -43,7 +45,7 @@ class RecipeRepository {
         val recipeId = addResult.getOrThrow()
         var finalRecipe = recipe.copy(id = recipeId)
         if (imageUri != null) {
-            val uploadResult = firebaseManager.uploadRecipeImage(imageUri, recipeId)
+            val uploadResult = firebaseManager.uploadRecipeImage(CookShareApp.instance, imageUri)
             uploadResult.onSuccess { imageUrl ->
                 finalRecipe = finalRecipe.copy(imageUrl = imageUrl)
                 firebaseManager.updateRecipe(finalRecipe)
@@ -56,7 +58,7 @@ class RecipeRepository {
     suspend fun updateRecipe(recipe: Recipe, newImageUri: Uri?): Result<Unit> = withContext(Dispatchers.IO) {
         var updatedRecipe = recipe.copy(lastUpdated = System.currentTimeMillis())
         if (newImageUri != null) {
-            val uploadResult = firebaseManager.uploadRecipeImage(newImageUri, recipe.id)
+            val uploadResult = firebaseManager.uploadRecipeImage(CookShareApp.instance, newImageUri)
             uploadResult.onSuccess { imageUrl ->
                 updatedRecipe = updatedRecipe.copy(imageUrl = imageUrl)
             }

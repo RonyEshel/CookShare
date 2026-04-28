@@ -25,9 +25,9 @@ class UserRepository {
     suspend fun updateProfile(user: User, newImageUri: Uri?): Result<Unit> = withContext(Dispatchers.IO) {
         var updatedUser = user.copy(lastUpdated = System.currentTimeMillis())
         if (newImageUri != null) {
-            val uploadResult = firebaseManager.uploadProfileImage(newImageUri, user.uid)
-            uploadResult.onSuccess { imageUrl ->
-                updatedUser = updatedUser.copy(profileImageUrl = imageUrl)
+            val uploadResult = firebaseManager.uploadProfileImage(CookShareApp.instance, newImageUri)
+            uploadResult.onSuccess { base64 ->
+                updatedUser = updatedUser.copy(profileImageUrl = base64)
             }
         }
         val result = firebaseManager.updateUserProfile(updatedUser)
