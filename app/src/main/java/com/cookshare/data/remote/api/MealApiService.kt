@@ -14,6 +14,9 @@ interface MealApiService {
 
     @GET("filter.php")
     suspend fun getMealsByCategory(@Query("c") category: String): MealResponse
+
+    @GET("filter.php")
+    suspend fun getMealsByArea(@Query("a") area: String): MealResponse
 }
 
 data class MealResponse(

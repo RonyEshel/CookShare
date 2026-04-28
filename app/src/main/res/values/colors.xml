@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#6C3FC5</color>
-    <color name="primary_dark">#3D1F8C</color>
-    <color name="primary_light">#9B72E0</color>
-    <color name="accent">#E040A0</color>
-    <color name="text_primary">#1A1035</color>
-    <color name="text_secondary">#6B618A</color>
-    <color name="background">#F4F2FA</color>
+    <!-- Warm food-forward palette -->
+    <color name="primary">#E8572A</color>
+    <color name="primary_dark">#C43E18</color>
+    <color name="primary_light">#FF7D52</color>
+    <color name="accent">#2ECC71</color>
+    <color name="background">#FAFAF7</color>
     <color name="surface">#FFFFFF</color>
-    <color name="error">#E53935</color>
+    <color name="card">#FFFFFF</color>
+    <color name="text_primary">#1C1C1E</color>
+    <color name="text_secondary">#6C6C70</color>
+    <color name="divider">#F0EFEA</color>
+    <color name="error">#FF3B30</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="card_background">#FFFFFF</color>
-    <color name="divider">#E0DAEA</color>
+    <color name="message_sent">#E8572A</color>
+    <color name="message_received">#F0EFEA</color>
 </resources>

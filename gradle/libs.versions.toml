@@ -1,5 +1,5 @@
 [versions]
-agp = "9.1.0"
+agp = "8.9.1"
 lottie = "6.4.0"
 shimmer = "0.5.0"
 coreKtx = "1.15.0"
@@ -10,7 +10,7 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.13.0"
 constraintLayout = "2.2.1"
-navigation = "2.8.9"
+navigation = "2.9.0"
 lifecycle = "2.9.0"
 room = "2.7.0"
 firebaseBom = "33.12.0"
@@ -55,4 +55,5 @@ shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shi
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.2.10" }
+navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }

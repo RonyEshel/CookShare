@@ -19,6 +19,12 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'")
     fun searchRecipes(query: String): LiveData<List<Recipe>>
 
+    @Query("SELECT * FROM recipes WHERE category = :category ORDER BY timestamp DESC")
+    fun getRecipesByCategory(category: String): LiveData<List<Recipe>>
+
+    @Query("SELECT * FROM recipes WHERE authorId IN (:authorIds) ORDER BY timestamp DESC")
+    fun getRecipesByAuthors(authorIds: List<String>): LiveData<List<Recipe>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(recipe: Recipe)
 
