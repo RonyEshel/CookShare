@@ -3,6 +3,7 @@ package com.cookshare.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.cookshare.data.model.Recipe
 import com.cookshare.data.remote.api.MealDto
@@ -16,8 +17,11 @@ class SearchViewModel : ViewModel() {
 
     private val recipeRepository = RecipeRepository()
 
-    private val _communityResults = MutableLiveData<List<Recipe>>(emptyList())
-    val communityResults: LiveData<List<Recipe>> = _communityResults
+    private val _communityQuery = MutableLiveData("")
+    val communityResults: LiveData<List<Recipe>> = _communityQuery.switchMap { query ->
+        if (query.isBlank()) MutableLiveData(emptyList())
+        else recipeRepository.searchLocalRecipes(query)
+    }
 
     private val _mealDbResults = MutableLiveData<List<MealDto>>(emptyList())
     val mealDbResults: LiveData<List<MealDto>> = _mealDbResults
@@ -29,16 +33,9 @@ class SearchViewModel : ViewModel() {
     val error: LiveData<String?> = _error
 
     private var searchJob: Job? = null
-    private var communityLiveData: LiveData<List<Recipe>>? = null
 
-    fun searchCommunity(query: String, onResult: (LiveData<List<Recipe>>) -> Unit) {
-        if (query.isBlank()) {
-            _communityResults.value = emptyList()
-            return
-        }
-        val liveData = recipeRepository.searchLocalRecipes(query)
-        communityLiveData = liveData
-        onResult(liveData)
+    fun searchCommunity(query: String) {
+        _communityQuery.value = query
     }
 
     fun searchMealDb(query: String) {

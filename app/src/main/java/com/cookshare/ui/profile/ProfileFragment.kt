@@ -22,7 +22,7 @@ class ProfileFragment : Fragment() {
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             viewModel.pendingImageUri = it
-            binding.ivProfilePhoto.setImageURI(it)
+            _binding?.ivProfilePhoto?.setImageURI(it)
         }
     }
 
@@ -40,6 +40,7 @@ class ProfileFragment : Fragment() {
             user ?: return@observe
             binding.etDisplayName.setText(user.displayName)
             binding.etEmail.setText(user.email)
+            binding.tvHeaderName.text = user.displayName
             if (user.profileImageUrl.isNotEmpty()) {
                 Picasso.get()
                     .load(user.profileImageUrl)

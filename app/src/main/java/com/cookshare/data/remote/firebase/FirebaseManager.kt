@@ -23,12 +23,9 @@ class FirebaseManager {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
             val user = result.user ?: throw Exception("Registration failed")
-            val userData = User(
-                uid = user.uid,
-                displayName = displayName,
-                email = email
-            )
-            firestore.collection("users").document(user.uid).set(userData).await()
+            val userData = User(uid = user.uid, displayName = displayName, email = email)
+            // Fire-and-forget: don't block registration on Firestore write
+            firestore.collection("users").document(user.uid).set(userData)
             Result.success(user)
         } catch (e: Exception) {
             Result.failure(e)
