@@ -14,13 +14,39 @@
         <ImageView
             android:id="@+id/ivRecipeImage"
             android:layout_width="0dp"
-            android:layout_height="240dp"
+            android:layout_height="260dp"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder_recipe"
             android:contentDescription="Recipe image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Gradient scrim over image -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="260dp"
+            android:background="@drawable/gradient_image_scrim"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Floating back button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_margin="12dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:backgroundTint="#80000000"
+            android:text="←"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:cornerRadius="22dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -32,24 +58,61 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Content card -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/contentLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/ivRecipeImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Meta row -->
+            <LinearLayout
+                android:id="@+id/metaRow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="18dp"
+                android:paddingBottom="4dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tvCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:textColor="@color/white"
+                    android:background="@color/primary"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="5dp"
+                    android:text="Category" />
+
+                <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvCookingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                app:layout_constraintTop_toTopOf="parent"
+                android:paddingHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/metaRow"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -57,34 +120,12 @@
                 android:id="@+id/tvAuthor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textColor="@color/text_secondary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/tvCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/white"
-                android:background="@color/primary"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/tvAuthor"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tvCookingTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:textColor="@color/text_secondary"
-                app:layout_constraintTop_toTopOf="@id/tvCategory"
-                app:layout_constraintBottom_toBottomOf="@id/tvCategory"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <View
@@ -92,8 +133,9 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/divider"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/tvCategory"
+                app:layout_constraintTop_toBottomOf="@id/tvAuthor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -101,10 +143,11 @@
                 android:id="@+id/tvDescriptionLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Description"
-                android:textSize="16sp"
+                android:text="About this recipe"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/divider1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -116,8 +159,9 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/text_secondary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="6dp"
-                android:lineSpacingMultiplier="1.4"
+                android:lineSpacingMultiplier="1.5"
                 app:layout_constraintTop_toBottomOf="@id/tvDescriptionLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -127,6 +171,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/divider"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/tvDescription"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,9 +182,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Ingredients"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/divider2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -151,8 +197,9 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/text_secondary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="6dp"
-                android:lineSpacingMultiplier="1.5"
+                android:lineSpacingMultiplier="1.6"
                 app:layout_constraintTop_toBottomOf="@id/tvIngredientsLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -162,6 +209,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/divider"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/tvIngredients"
                 app:layout_constraintStart_toStartOf="parent"
@@ -172,9 +220,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Instructions"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/divider3"
                 app:layout_constraintStart_toStartOf="parent"
@@ -186,20 +235,23 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/text_secondary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="6dp"
-                android:lineSpacingMultiplier="1.5"
+                android:lineSpacingMultiplier="1.6"
                 app:layout_constraintTop_toBottomOf="@id/tvInstructionsLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Owner action buttons -->
             <LinearLayout
                 android:id="@+id/layoutOwnerActions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="end"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="32dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/tvInstructions"
                 app:layout_constraintStart_toStartOf="parent"
@@ -210,18 +262,20 @@
                     android:id="@+id/btnDelete"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="44dp"
                     android:text="Delete"
                     android:textColor="@color/error"
-                    android:layout_marginEnd="12dp"
-                    app:strokeColor="@color/error" />
+                    android:layout_marginEnd="10dp"
+                    app:strokeColor="@color/error"
+                    app:cornerRadius="22dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEdit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Edit"
-                    android:backgroundTint="@color/primary" />
+                    android:layout_height="44dp"
+                    android:text="Edit Recipe"
+                    android:backgroundTint="@color/primary"
+                    app:cornerRadius="22dp" />
 
             </LinearLayout>
 
