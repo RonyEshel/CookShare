@@ -6,104 +6,160 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_landing_gradient">
 
-    <!-- Branding: exactly 58% of screen height -->
+    <!-- Purple glow blob top -->
+    <View
+        android:id="@+id/glowTop"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:background="@drawable/bg_glow_circle"
+        android:alpha="0.25"
+        android:layout_marginTop="-120dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Logo + animation -->
     <LinearLayout
-        android:id="@+id/brandingSection"
+        android:id="@+id/heroSection"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomCard"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintBottom_toTopOf="@id/bottomSection"
+        app:layout_constraintVertical_bias="0.38">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieAnimation"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             app:lottie_loop="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CookShare"
-            android:textSize="40sp"
+            android:textSize="48sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:layout_marginTop="12dp"
-            android:letterSpacing="0.02" />
+            android:letterSpacing="-0.02"
+            android:layout_marginTop="8dp" />
 
         <TextView
+            android:id="@+id/tvSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Discover &amp; share amazing recipes"
-            android:textSize="14sp"
-            android:textColor="#B8AADD"
-            android:layout_marginTop="6dp"
-            android:gravity="center" />
+            android:text="Your recipes. Your community."
+            android:textSize="16sp"
+            android:textColor="#AADDBB99"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:letterSpacing="0.02" />
+
+        <!-- Feature pills row (hidden when logged in) -->
+        <LinearLayout
+            android:id="@+id/featurePills"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="28dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🍳 Share"
+                android:textSize="13sp"
+                android:textColor="#CCFFFFFF"
+                android:background="@drawable/bg_pill_outline"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="7dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔍 Discover"
+                android:textSize="13sp"
+                android:textColor="#CCFFFFFF"
+                android:background="@drawable/bg_pill_outline"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="7dp"
+                android:layout_marginStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💬 Connect"
+                android:textSize="13sp"
+                android:textColor="#CCFFFFFF"
+                android:background="@drawable/bg_pill_outline"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="7dp"
+                android:layout_marginStart="10dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Bottom sheet: wrap_content, anchored to bottom -->
+    <!-- Bottom CTA -->
     <LinearLayout
-        android:id="@+id/bottomCard"
+        android:id="@+id/bottomSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_landing_card"
-        android:paddingHorizontal="28dp"
-        android:paddingTop="28dp"
-        android:paddingBottom="40dp"
+        android:paddingHorizontal="32dp"
+        android:paddingBottom="52dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/brandingSection"
-        app:layout_constraintHeight_percent="0.42">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Let's get cooking 🍽"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"
-            android:layout_gravity="center"
-            android:layout_marginBottom="4dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Join thousands of home chefs"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginBottom="24dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSignIn"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:text="Sign In"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="@color/primary"
-            app:cornerRadius="26dp" />
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCreateAccount"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Get Started"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/primary"
+            app:cornerRadius="28dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignIn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:text="Create Account"
+            android:text="I already have an account"
+            android:textSize="15sp"
+            android:textColor="#AAFFFFFF"
+            android:layout_marginTop="6dp"
+            app:cornerRadius="28dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Continue to Feed"
             android:textSize="16sp"
-            android:textColor="@color/primary"
-            android:layout_marginTop="10dp"
-            app:strokeColor="@color/primary"
-            app:strokeWidth="2dp"
-            app:cornerRadius="26dp" />
+            android:textStyle="bold"
+            android:backgroundTint="@color/primary"
+            android:visibility="gone"
+            app:cornerRadius="28dp"
+            app:icon="@drawable/ic_nav_feed"
+            app:iconGravity="textEnd"
+            app:iconTint="#FFFFFF" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignOut"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Not you? Sign out"
+            android:textSize="15sp"
+            android:textColor="#AAFFFFFF"
+            android:layout_marginTop="6dp"
+            android:visibility="gone"
+            app:cornerRadius="28dp" />
 
     </LinearLayout>
 

@@ -18,12 +18,6 @@ class AuthViewModel : ViewModel() {
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    init {
-        if (firebaseManager.isLoggedIn) {
-            _authState.value = AuthState.Authenticated(firebaseManager.currentUser!!)
-        }
-    }
-
     fun login(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
             _authState.value = AuthState.Error("Please fill in all fields")
@@ -59,6 +53,15 @@ class AuthViewModel : ViewModel() {
     fun logout() {
         firebaseManager.logout()
         _authState.value = AuthState.Unauthenticated
+    }
+
+    fun sendPasswordReset(email: String, onResult: (Boolean, String) -> Unit) {
+        if (email.isBlank()) { onResult(false, "Enter your email address first"); return }
+        viewModelScope.launch {
+            val result = firebaseManager.sendPasswordReset(email)
+            result.onSuccess { onResult(true, "Reset link sent — check your inbox") }
+                .onFailure { onResult(false, it.message ?: "Failed to send reset email") }
+        }
     }
 }
 

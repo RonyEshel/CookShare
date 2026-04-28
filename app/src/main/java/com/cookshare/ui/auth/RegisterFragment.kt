@@ -28,10 +28,30 @@ class RegisterFragment : Fragment() {
         binding.btnRegister.setOnClickListener {
             val name = binding.etDisplayName.text.toString().trim()
             val email = binding.etEmail.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
-            val confirmPassword = binding.etConfirmPassword.text.toString().trim()
+            val password = binding.etPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
+            binding.tilDisplayName.error = null
+            binding.tilEmail.error = null
+            binding.tilConfirmPassword.error = null
+            binding.tilPassword.error = null
+            if (name.isBlank()) {
+                binding.tilDisplayName.error = "Display name is required"
+                binding.etDisplayName.requestFocus()
+                return@setOnClickListener
+            }
+            if (email.isBlank()) {
+                binding.tilEmail.error = "Email is required"
+                binding.etEmail.requestFocus()
+                return@setOnClickListener
+            }
+            if (password.length < 6) {
+                binding.tilPassword.error = "Password must be at least 6 characters"
+                binding.etPassword.requestFocus()
+                return@setOnClickListener
+            }
             if (password != confirmPassword) {
-                Toast.makeText(requireContext(), "Passwords don't match", Toast.LENGTH_SHORT).show()
+                binding.tilConfirmPassword.error = "Passwords don't match"
+                binding.etConfirmPassword.requestFocus()
                 return@setOnClickListener
             }
             authViewModel.register(email, password, name)
