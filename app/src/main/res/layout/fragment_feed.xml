@@ -6,17 +6,74 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <!-- Gradient header with greeting -->
+    <LinearLayout
+        android:id="@+id/header"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/bg_toolbar_gradient"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_feed_header"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="20dp"
         android:elevation="4dp"
-        app:title="CookShare"
-        app:titleTextColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CookShare"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.02" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What's cooking today?"
+            android:textSize="13sp"
+            android:textColor="#CCffffff"
+            android:layout_marginTop="2dp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupFeedMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEveryone"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Everyone"
+                android:textColor="@color/chip_feed_text_selector"
+                android:checked="true"
+                app:chipBackgroundColor="@color/chip_feed_bg_selector"
+                app:chipStrokeColor="#FFFFFF"
+                app:chipStrokeWidth="2dp"
+                app:checkedIconVisible="false" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFollowing"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Following"
+                android:textColor="@color/chip_feed_text_selector"
+                app:chipBackgroundColor="@color/chip_feed_bg_selector"
+                app:chipStrokeColor="#FFFFFF"
+                app:chipStrokeWidth="2dp"
+                app:checkedIconVisible="false" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
 
     <!-- Shimmer skeleton (shown while loading) -->
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -24,10 +81,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="visible"
-        app:shimmer_base_color="#E8E4F0"
-        app:shimmer_highlight_color="#FFFFFF"
+        app:shimmer_base_color="#EEEEE8"
+        app:shimmer_highlight_color="#F8F8F4"
         app:shimmer_duration="1000"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -50,7 +107,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -65,14 +122,19 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingTop="8dp"
-                android:paddingBottom="80dp" />
+                android:paddingBottom="80dp"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideOverlay"
+                android:fadeScrollbars="false"
+                android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+                android:scrollbarSize="4dp" />
 
             <TextView
                 android:id="@+id/tvEmptyState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="No recipes yet.\nBe the first to share!"
+                android:text="No recipes yet.&#10;Be the first to share!"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textColor="@color/text_secondary"

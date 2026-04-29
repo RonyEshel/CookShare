@@ -28,10 +28,14 @@ class FeedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recipeAdapter = RecipeAdapter { recipe ->
-            val bundle = Bundle().apply { putString("recipeId", recipe.id) }
-            findNavController().navigate(R.id.action_feedFragment_to_recipeDetailFragment, bundle)
-        }
+        recipeAdapter = RecipeAdapter(
+            onRecipeClick = { recipe ->
+                val action = FeedFragmentDirections
+                    .actionFeedFragmentToRecipeDetailFragment(recipeId = recipe.id)
+                findNavController().navigate(action)
+            },
+            onSaveClick = { recipe -> viewModel.toggleSave(recipe) }
+        )
 
         binding.recyclerViewRecipes.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -42,11 +46,16 @@ class FeedFragment : Fragment() {
 
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshRecipes() }
 
+        binding.chipGroupFeedMode.setOnCheckedStateChangeListener { _, checkedIds ->
+            val mode = if (R.id.chipFollowing in checkedIds) "following" else "everyone"
+            viewModel.setFeedMode(mode)
+        }
+
         binding.fabAddRecipe.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_editRecipeFragment)
         }
 
-        viewModel.recipes.observe(viewLifecycleOwner) { recipes ->
+        viewModel.displayRecipes.observe(viewLifecycleOwner) { recipes ->
             if (shimmerShown) {
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.visibility = View.GONE
@@ -55,6 +64,15 @@ class FeedFragment : Fragment() {
             }
             recipeAdapter.submitList(recipes)
             binding.tvEmptyState.visibility = if (recipes.isEmpty()) View.VISIBLE else View.GONE
+            viewModel.refreshLiveUsers()
+        }
+
+        viewModel.savedRecipeIds().observe(viewLifecycleOwner) { ids ->
+            recipeAdapter.updateSavedIds(ids.toSet())
+        }
+
+        viewModel.liveUsers.observe(viewLifecycleOwner) { users ->
+            recipeAdapter.updateLiveUsers(users)
         }
 
         viewModel.isRefreshing.observe(viewLifecycleOwner) { refreshing ->
@@ -64,6 +82,12 @@ class FeedFragment : Fragment() {
         viewModel.error.observe(viewLifecycleOwner) { error ->
             error?.let { Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show() }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadFollowingIds()
+        viewModel.refreshLiveUsers()
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
