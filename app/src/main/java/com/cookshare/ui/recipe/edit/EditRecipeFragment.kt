@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.cookshare.R
 import com.cookshare.databinding.FragmentEditRecipeBinding
 import com.squareup.picasso.Picasso
@@ -19,6 +20,9 @@ class EditRecipeFragment : Fragment() {
     private var _binding: FragmentEditRecipeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: EditRecipeViewModel by viewModels()
+    private val args: EditRecipeFragmentArgs by navArgs()
+
+    private val categories = com.cookshare.ui.search.CommunityCategories.list.map { it.name }
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -35,11 +39,13 @@ class EditRecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val categories = listOf("Breakfast", "Lunch", "Dinner", "Dessert", "Snack", "Drink")
-        binding.spinnerCategory.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
+        binding.actvCategory.setAdapter(adapter)
+        binding.actvCategory.setText(categories[0], false)
 
-        val recipeId = arguments?.getString("recipeId")
-        viewModel.loadRecipe(recipeId)
+        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+
+        viewModel.loadRecipe(args.recipeId)
 
         viewModel.recipe.observe(viewLifecycleOwner) { recipe ->
             recipe?.let {
@@ -48,8 +54,9 @@ class EditRecipeFragment : Fragment() {
                 binding.etIngredients.setText(it.ingredients)
                 binding.etInstructions.setText(it.instructions)
                 binding.etCookingTime.setText(it.cookingTime.toString())
-                val catIndex = categories.indexOf(it.category)
-                if (catIndex >= 0) binding.spinnerCategory.setSelection(catIndex)
+                if (categories.contains(it.category)) {
+                    binding.actvCategory.setText(it.category, false)
+                }
                 if (it.imageUrl.isNotEmpty()) {
                     Picasso.get().load(it.imageUrl).placeholder(R.drawable.placeholder_recipe).into(binding.ivRecipeImage)
                 }
@@ -65,7 +72,7 @@ class EditRecipeFragment : Fragment() {
                 description = binding.etDescription.text.toString().trim(),
                 ingredients = binding.etIngredients.text.toString().trim(),
                 instructions = binding.etInstructions.text.toString().trim(),
-                category = binding.spinnerCategory.selectedItem.toString(),
+                category = binding.actvCategory.text.toString().ifBlank { categories[0] },
                 cookingTime = binding.etCookingTime.text.toString().toIntOrNull() ?: 0
             )
         }
