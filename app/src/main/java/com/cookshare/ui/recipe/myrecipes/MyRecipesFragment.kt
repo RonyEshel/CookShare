@@ -28,10 +28,13 @@ class MyRecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recipeAdapter = RecipeAdapter { recipe ->
-            val bundle = Bundle().apply { putString("recipeId", recipe.id) }
-            findNavController().navigate(R.id.action_myRecipesFragment_to_recipeDetailFragment, bundle)
-        }
+        recipeAdapter = RecipeAdapter(
+            onRecipeClick = { recipe ->
+                val action = MyRecipesFragmentDirections
+                    .actionMyRecipesFragmentToRecipeDetailFragment(recipeId = recipe.id)
+                findNavController().navigate(action)
+            }
+        )
 
         binding.recyclerViewMyRecipes.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -40,11 +43,16 @@ class MyRecipesFragment : Fragment() {
 
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshMyRecipes() }
 
+        binding.fabAddRecipe.setOnClickListener {
+            findNavController().navigate(R.id.action_myRecipesFragment_to_editRecipeFragment)
+        }
+
         viewModel.init()
 
         viewModel.recipes.observe(viewLifecycleOwner) { recipes ->
             recipeAdapter.submitList(recipes)
             binding.tvEmptyState.visibility = if (recipes.isEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerViewMyRecipes.visibility = if (recipes.isEmpty()) View.GONE else View.VISIBLE
         }
 
         viewModel.isRefreshing.observe(viewLifecycleOwner) { refreshing ->
