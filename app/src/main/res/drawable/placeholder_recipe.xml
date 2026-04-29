@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="200dp"
-    android:height="200dp"
-    android:viewportWidth="200"
-    android:viewportHeight="200">
-    <path android:fillColor="#EDE8F5" android:pathData="M0,0h200v200h-200z" />
-    <path android:fillColor="#C4B0E0"
-        android:pathData="M85,65 L115,65 L122,82 L78,82 Z" />
-    <path android:fillColor="#C4B0E0"
-        android:pathData="M65,82 L135,82 L135,138 Q135,148 125,148 L75,148 Q65,148 65,138 Z" />
-</vector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Warm gradient background -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#FFB088"
+                android:centerColor="#E8572A"
+                android:endColor="#C84818" />
+        </shape>
+    </item>
+
+    <!-- Subtle dot pattern overlay (just a darker blob) -->
+    <item
+        android:width="160dp"
+        android:height="160dp"
+        android:gravity="center">
+        <shape android:shape="oval">
+            <solid android:color="#22FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Chef hat icon centered -->
+    <item
+        android:width="64dp"
+        android:height="64dp"
+        android:gravity="center"
+        android:drawable="@drawable/ic_chef_hat" />
+
+</layer-list>
