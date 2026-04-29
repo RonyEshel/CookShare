@@ -14,13 +14,39 @@
         <ImageView
             android:id="@+id/ivMealImage"
             android:layout_width="0dp"
-            android:layout_height="240dp"
+            android:layout_height="260dp"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder_recipe"
             android:contentDescription="Meal image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Gradient scrim over image -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="260dp"
+            android:background="@drawable/gradient_image_scrim"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Floating back button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_margin="12dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:backgroundTint="#80000000"
+            android:text="←"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:cornerRadius="22dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -36,44 +62,56 @@
             android:id="@+id/contentLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/ivMealImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Meta row -->
+            <LinearLayout
+                android:id="@+id/metaRow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="18dp"
+                android:paddingBottom="4dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tvMealCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_category_chip"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="5dp" />
+
+                <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvMealArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tvMealName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                app:layout_constraintTop_toTopOf="parent"
+                android:paddingHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/metaRow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/tvMealCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/white"
-                android:background="@color/accent"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@id/tvMealName"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tvMealArea"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:textColor="@color/text_secondary"
-                app:layout_constraintTop_toTopOf="@id/tvMealCategory"
-                app:layout_constraintBottom_toBottomOf="@id/tvMealCategory"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <View
@@ -81,8 +119,9 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/divider"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/tvMealCategory"
+                app:layout_constraintTop_toBottomOf="@id/tvMealName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -91,9 +130,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Ingredients"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/divider1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +145,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/text_secondary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="6dp"
                 android:lineSpacingMultiplier="1.5"
                 app:layout_constraintTop_toBottomOf="@id/tvIngredientsLabel"
@@ -116,6 +157,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/divider"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/tvIngredients"
                 app:layout_constraintStart_toStartOf="parent"
@@ -126,11 +168,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Instructions"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
                 app:layout_constraintTop_toBottomOf="@id/divider2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -141,8 +183,9 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/text_secondary"
+                android:paddingHorizontal="16dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="32dp"
                 android:lineSpacingMultiplier="1.5"
                 app:layout_constraintTop_toBottomOf="@id/tvInstructionsLabel"
                 app:layout_constraintStart_toStartOf="parent"

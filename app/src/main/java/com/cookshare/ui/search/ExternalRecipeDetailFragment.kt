@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.cookshare.R
 import com.cookshare.databinding.FragmentExternalRecipeDetailBinding
 import com.squareup.picasso.Picasso
@@ -17,6 +18,7 @@ class ExternalRecipeDetailFragment : Fragment() {
     private var _binding: FragmentExternalRecipeDetailBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ExternalRecipeDetailViewModel by viewModels()
+    private val args: ExternalRecipeDetailFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentExternalRecipeDetailBinding.inflate(inflater, container, false)
@@ -26,12 +28,14 @@ class ExternalRecipeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mealId = arguments?.getString("mealId") ?: run {
+        val mealId = args.mealId.ifBlank { null } ?: run {
             findNavController().navigateUp()
             return
         }
 
         viewModel.loadMeal(mealId)
+
+        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
