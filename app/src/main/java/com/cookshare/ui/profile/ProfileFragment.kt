@@ -34,6 +34,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showViewMode()
         viewModel.loadProfile()
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
@@ -41,39 +42,93 @@ class ProfileFragment : Fragment() {
             binding.etDisplayName.setText(user.displayName)
             binding.etEmail.setText(user.email)
             binding.tvHeaderName.text = user.displayName
-            if (user.profileImageUrl.isNotEmpty()) {
-                Picasso.get()
-                    .load(user.profileImageUrl)
-                    .placeholder(R.drawable.placeholder_profile)
-                    .error(R.drawable.placeholder_profile)
-                    .into(binding.ivProfilePhoto)
-            }
+            binding.tvHeaderEmail.text = user.email
+            renderProfileImage(user.profileImageUrl)
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
             binding.btnSaveProfile.isEnabled = !loading
             binding.btnLogout.isEnabled = !loading
+            binding.btnEditProfile.isEnabled = !loading
         }
 
         viewModel.saveResult.observe(viewLifecycleOwner) { result ->
             result ?: return@observe
             result.onSuccess {
                 Toast.makeText(requireContext(), "Profile updated!", Toast.LENGTH_SHORT).show()
+                showViewMode()
             }.onFailure { e ->
                 Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
 
+        binding.btnEditProfile.setOnClickListener { showEditMode() }
+
+        binding.btnCancelEdit.setOnClickListener {
+            viewModel.pendingImageUri = null
+            viewModel.user.value?.let {
+                binding.etDisplayName.setText(it.displayName)
+                renderProfileImage(it.profileImageUrl)
+            }
+            showViewMode()
+        }
+
+        binding.btnSavedRecipes.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_savedRecipesFragment)
+        }
+
         binding.btnChangePhoto.setOnClickListener { pickImage.launch("image/*") }
 
         binding.btnSaveProfile.setOnClickListener {
-            viewModel.saveProfile(binding.etDisplayName.text.toString().trim())
+            val name = binding.etDisplayName.text.toString().trim()
+            if (name.isBlank()) {
+                binding.tilDisplayName.error = "Display name cannot be empty"
+                return@setOnClickListener
+            }
+            binding.tilDisplayName.error = null
+            viewModel.saveProfile(name)
         }
 
         binding.btnLogout.setOnClickListener {
             viewModel.logout()
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        }
+    }
+
+    private fun showViewMode() {
+        binding.viewModeContainer.visibility = View.VISIBLE
+        binding.editModeCard.visibility = View.GONE
+        binding.btnChangePhoto.visibility = View.GONE
+        binding.tvHeaderEmail.visibility = View.VISIBLE
+    }
+
+    private fun showEditMode() {
+        binding.viewModeContainer.visibility = View.GONE
+        binding.editModeCard.visibility = View.VISIBLE
+        binding.btnChangePhoto.visibility = View.VISIBLE
+        binding.tvHeaderEmail.visibility = View.GONE
+    }
+
+    private fun renderProfileImage(url: String) {
+        if (url.isEmpty()) {
+            binding.ivProfilePhoto.setImageResource(R.drawable.placeholder_profile)
+            return
+        }
+        if (url.startsWith("http")) {
+            Picasso.get()
+                .load(url)
+                .placeholder(R.drawable.placeholder_profile)
+                .error(R.drawable.placeholder_profile)
+                .into(binding.ivProfilePhoto)
+        } else {
+            try {
+                val bytes = android.util.Base64.decode(url, android.util.Base64.NO_WRAP)
+                val bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                if (bitmap != null) binding.ivProfilePhoto.setImageBitmap(bitmap)
+            } catch (_: Exception) {
+                binding.ivProfilePhoto.setImageResource(R.drawable.placeholder_profile)
+            }
         }
     }
 
