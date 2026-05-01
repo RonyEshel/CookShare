@@ -57,9 +57,7 @@ class EditRecipeFragment : Fragment() {
                 if (categories.contains(it.category)) {
                     binding.actvCategory.setText(it.category, false)
                 }
-                if (it.imageUrl.isNotEmpty()) {
-                    Picasso.get().load(it.imageUrl).placeholder(R.drawable.placeholder_recipe).into(binding.ivRecipeImage)
-                }
+                renderExistingImage(it.imageUrl)
                 binding.tvScreenTitle.text = "Edit Recipe"
             }
         }
@@ -93,6 +91,22 @@ class EditRecipeFragment : Fragment() {
                     Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun renderExistingImage(url: String) {
+        if (url.isEmpty()) return
+        if (url.startsWith("http")) {
+            Picasso.get().load(url)
+                .placeholder(R.drawable.placeholder_recipe)
+                .error(R.drawable.placeholder_recipe)
+                .into(binding.ivRecipeImage)
+        } else {
+            try {
+                val bytes = android.util.Base64.decode(url, android.util.Base64.NO_WRAP)
+                val bmp = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                if (bmp != null) binding.ivRecipeImage.setImageBitmap(bmp)
+            } catch (_: Exception) { /* keep placeholder */ }
         }
     }
 

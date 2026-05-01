@@ -53,6 +53,11 @@ class MyRecipesFragment : Fragment() {
             recipeAdapter.submitList(recipes)
             binding.tvEmptyState.visibility = if (recipes.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerViewMyRecipes.visibility = if (recipes.isEmpty()) View.GONE else View.VISIBLE
+            binding.tvRecipeCountSubtitle.text = when (recipes.size) {
+                0 -> "Your culinary collection"
+                1 -> "1 recipe shared"
+                else -> "${recipes.size} recipes shared"
+            }
         }
 
         viewModel.isRefreshing.observe(viewLifecycleOwner) { refreshing ->

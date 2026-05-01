@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.cookshare.R
 import com.cookshare.databinding.FragmentProfileBinding
+import com.cookshare.ui.auth.AuthViewModel
 import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
@@ -18,6 +20,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ProfileViewModel by viewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -36,6 +39,7 @@ class ProfileFragment : Fragment() {
 
         showViewMode()
         viewModel.loadProfile()
+        viewModel.loadStats()
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user ?: return@observe
@@ -45,6 +49,10 @@ class ProfileFragment : Fragment() {
             binding.tvHeaderEmail.text = user.email
             renderProfileImage(user.profileImageUrl)
         }
+
+        viewModel.recipeCount.observe(viewLifecycleOwner) { binding.tvRecipeCount.text = it.toString() }
+        viewModel.savedCount.observe(viewLifecycleOwner) { binding.tvSavedCount.text = it.toString() }
+        viewModel.followingCount.observe(viewLifecycleOwner) { binding.tvFollowingCount.text = it.toString() }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
@@ -91,7 +99,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnLogout.setOnClickListener {
-            viewModel.logout()
+            authViewModel.logout()
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }

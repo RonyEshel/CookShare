@@ -18,7 +18,6 @@ class FeedFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FeedViewModel by viewModels()
     private lateinit var recipeAdapter: RecipeAdapter
-    private var shimmerShown = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFeedBinding.inflate(inflater, container, false)
@@ -56,12 +55,10 @@ class FeedFragment : Fragment() {
         }
 
         viewModel.displayRecipes.observe(viewLifecycleOwner) { recipes ->
-            if (shimmerShown) {
-                binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
-                binding.swipeRefreshLayout.visibility = View.VISIBLE
-                shimmerShown = false
-            }
+            // Always update visibility — flag-based logic broke on back navigation
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.visibility = View.GONE
+            binding.swipeRefreshLayout.visibility = View.VISIBLE
             recipeAdapter.submitList(recipes)
             binding.tvEmptyState.visibility = if (recipes.isEmpty()) View.VISIBLE else View.GONE
             viewModel.refreshLiveUsers()

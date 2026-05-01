@@ -18,7 +18,19 @@ import java.io.ByteArrayOutputStream
 class FirebaseManager {
 
     private val auth = FirebaseAuth.getInstance()
-    private val firestore = FirebaseFirestore.getInstance("cookshare-db")
+    private val firestore = FirebaseFirestore.getInstance("cookshare-db").also {
+        // Enable offline persistence so chat + recipes work without network.
+        // Idempotent — only applies on first call per process.
+        try {
+            it.firestoreSettings = com.google.firebase.firestore.FirebaseFirestoreSettings.Builder()
+                .setLocalCacheSettings(
+                    com.google.firebase.firestore.PersistentCacheSettings.newBuilder()
+                        .setSizeBytes(com.google.firebase.firestore.FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+                        .build()
+                )
+                .build()
+        } catch (_: Exception) { /* settings already locked after first use */ }
+    }
 
     val currentUser: FirebaseUser? get() = auth.currentUser
     val isLoggedIn: Boolean get() = currentUser != null
@@ -176,17 +188,15 @@ class FirebaseManager {
         return try {
             val convId = conversationId(myId, otherId)
             val ref = firestore.collection("conversations").document(convId)
-            val snapshot = ref.get().await()
-            if (!snapshot.exists()) {
-                val data = hashMapOf(
-                    "id" to convId,
-                    "participants" to listOf(myId, otherId),
-                    "participantNames" to mapOf(myId to myName, otherId to otherName),
-                    "lastMessage" to "",
-                    "lastMessageTime" to 0L
-                )
-                ref.set(data).await()
-            }
+            // Offline-friendly: don't read first. The conversation ID is deterministic
+            // from the two UIDs, so we always know it. SetOptions.merge() preserves
+            // any existing fields (lastMessage, lastMessageTime) if the doc exists.
+            val data = mapOf(
+                "id" to convId,
+                "participants" to listOf(myId, otherId),
+                "participantNames" to mapOf(myId to myName, otherId to otherName)
+            )
+            ref.set(data, com.google.firebase.firestore.SetOptions.merge())
             Result.success(convId)
         } catch (e: Exception) {
             Result.failure(e)
@@ -348,6 +358,8 @@ class FirebaseManager {
             val msgRef = firestore.collection("conversations").document(conversationId)
                 .collection("messages").document()
             val msgWithId = message.copy(id = msgRef.id)
+            // No .await() — Firestore queues the write locally and syncs when online.
+            // The local listener fires immediately so the message shows up even offline.
             msgRef.set(mapOf(
                 "id" to msgWithId.id,
                 "senderId" to msgWithId.senderId,
@@ -355,9 +367,9 @@ class FirebaseManager {
                 "text" to msgWithId.text,
                 "timestamp" to msgWithId.timestamp,
                 "serverTimestamp" to FieldValue.serverTimestamp()
-            )).await()
+            ))
             firestore.collection("conversations").document(conversationId)
-                .update("lastMessage", message.text, "lastMessageTime", message.timestamp).await()
+                .update("lastMessage", message.text, "lastMessageTime", message.timestamp)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
