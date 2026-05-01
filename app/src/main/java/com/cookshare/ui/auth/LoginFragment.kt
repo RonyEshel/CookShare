@@ -28,6 +28,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        applyPasswordMasking(binding.etPassword)
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
@@ -76,6 +78,18 @@ class LoginFragment : Fragment() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun applyPasswordMasking(et: TextInputEditText) {
+        val masker = android.text.method.PasswordTransformationMethod.getInstance()
+        et.transformationMethod = masker
+        et.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                if (et.transformationMethod !== masker) et.transformationMethod = masker
+            }
+        })
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

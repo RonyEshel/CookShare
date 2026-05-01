@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.cookshare.R
+import com.cookshare.data.remote.firebase.FirebaseManager
 import com.cookshare.databinding.FragmentLandingBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class LandingFragment : Fragment() {
 
@@ -34,7 +37,21 @@ class LandingFragment : Fragment() {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            renderLoggedInState(currentUser.displayName ?: currentUser.email?.substringBefore("@") ?: "Chef")
+            // Show something immediately, then upgrade to real name from Firestore
+            val initial = currentUser.displayName?.takeIf { it.isNotBlank() }
+                ?: currentUser.email?.substringBefore("@")
+                ?: "Chef"
+            renderLoggedInState(initial)
+
+            if (currentUser.displayName.isNullOrBlank()) {
+                lifecycleScope.launch {
+                    val name = FirebaseManager().getUserProfile(currentUser.uid)
+                        .getOrNull()?.displayName?.takeIf { it.isNotBlank() }
+                    if (name != null && _binding != null) {
+                        binding.tvSubtitle.text = "Hey, $name 👋"
+                    }
+                }
+            }
         } else {
             renderLoggedOutState()
         }

@@ -16,6 +16,9 @@ interface SavedRecipeDao {
     @Query("SELECT COUNT(*) FROM saved_recipes WHERE userId = :userId AND recipeId = :recipeId")
     suspend fun isSaved(userId: String, recipeId: String): Int
 
+    @Query("SELECT COUNT(*) FROM saved_recipes WHERE userId = :userId")
+    suspend fun countForUser(userId: String): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun save(savedRecipe: SavedRecipe)
 

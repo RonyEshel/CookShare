@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#FFE4D6"
+                android:endColor="#FFD0B8" />
+        </shape>
+    </item>
+
+    <item
+        android:width="56dp"
+        android:height="56dp"
+        android:gravity="center"
+        android:drawable="@drawable/ic_chef_hat" />
+
+</layer-list>

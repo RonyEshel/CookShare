@@ -37,7 +37,7 @@ object SeedData {
             ingredients = "700g chicken breast, cubed\n1 cup yogurt\n2 tsp garam masala\n1 tsp turmeric\n1 tsp cumin\n2 tsp coriander\n400ml tomato passata\n200ml heavy cream\n1 onion, diced\n4 cloves garlic\n1 tbsp ginger\n2 tbsp butter\nFresh cilantro to serve\nSalt to taste",
             instructions = "1. Marinate chicken in yogurt, half the spices, salt for at least 1 hour.\n2. Grill or pan-fry chicken until charred. Set aside.\n3. In a pan, melt butter and cook onion until golden.\n4. Add garlic and ginger, cook 2 minutes.\n5. Add remaining spices and cook 1 minute.\n6. Add passata and simmer 15 minutes.\n7. Blend sauce smooth, return to pan.\n8. Add cream and chicken, simmer 10 minutes.\n9. Garnish with cilantro and serve with naan.",
             category = "Dinner",
-            imageUrl = "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&q=80",
+            imageUrl = "https://images.unsplash.com/photo-1631292784640-2b24be784d5d?w=800&q=80",
             authorId = "seed_user_priya",
             authorName = "Chef Priya",
             cookingTime = 45
@@ -125,7 +125,7 @@ object SeedData {
             ingredients = "2 cups glutinous rice\n400ml coconut milk\n4 tbsp sugar\n1 tsp salt\n2 ripe mangoes, sliced\n1 tbsp sesame seeds (optional)",
             instructions = "1. Soak glutinous rice for 4 hours or overnight.\n2. Steam rice for 20-25 minutes until tender.\n3. Heat coconut milk with sugar and salt until sugar dissolves.\n4. Mix 2/3 of the coconut sauce into the cooked rice.\n5. Cover and let rice absorb sauce for 20 minutes.\n6. Slice mangoes.\n7. Serve rice with mango slices, drizzle remaining coconut sauce on top.\n8. Garnish with sesame seeds if using.",
             category = "Dessert",
-            imageUrl = "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=800&q=80",
+            imageUrl = "https://images.unsplash.com/photo-1605379399843-5870eea9b74e?w=800&q=80",
             authorId = "seed_user_mia",
             authorName = "Chef Mia",
             cookingTime = 35
@@ -136,7 +136,7 @@ object SeedData {
             ingredients = "300g Arborio rice\n500g mixed mushrooms\n1.2L warm vegetable stock\n1 onion, finely diced\n3 garlic cloves\n150ml dry white wine\n80g Parmesan, grated\n3 tbsp butter\n2 tbsp olive oil\nFresh thyme\nSalt and pepper",
             instructions = "1. Heat oil and 1 tbsp butter in a wide pan. Sauté mushrooms until golden. Set aside.\n2. In same pan, cook onion until soft.\n3. Add garlic and rice, stir to coat, toast 2 minutes.\n4. Add wine, stir until absorbed.\n5. Add warm stock one ladle at a time, stirring constantly.\n6. Continue until rice is creamy and al dente, about 18 minutes.\n7. Stir in mushrooms, remaining butter, and Parmesan.\n8. Season, scatter thyme leaves, serve immediately.",
             category = "Dinner",
-            imageUrl = "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=800&q=80",
+            imageUrl = "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=800&q=80",
             authorId = "seed_user_marco",
             authorName = "Chef Marco",
             cookingTime = 35

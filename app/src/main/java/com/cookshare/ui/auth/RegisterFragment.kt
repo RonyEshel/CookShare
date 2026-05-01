@@ -25,6 +25,9 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        applyMasking(binding.etPassword)
+        applyMasking(binding.etConfirmPassword)
+
         binding.btnRegister.setOnClickListener {
             val name = binding.etDisplayName.text.toString().trim()
             val email = binding.etEmail.text.toString().trim()
@@ -71,6 +74,18 @@ class RegisterFragment : Fragment() {
             binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
             binding.btnRegister.isEnabled = !loading
         }
+    }
+
+    private fun applyMasking(et: com.google.android.material.textfield.TextInputEditText) {
+        val masker = android.text.method.PasswordTransformationMethod.getInstance()
+        et.transformationMethod = masker
+        et.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                if (et.transformationMethod !== masker) et.transformationMethod = masker
+            }
+        })
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
